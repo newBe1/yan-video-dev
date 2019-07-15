@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="yanVideominiapi" />
+        <module name="yanVideoservice" />
+        <module name="yanVideo-pojo" />
+        <module name="yanVideo-service" />
+        <module name="yanVideomap" />
+        <module name="yanVideocommom" />
+        <module name="mybatis-generatorConfig" />
+        <module name="yanVideo-mapper" />
+        <module name="yanVideo-mini-api" />
+        <module name="imooc-videos-dev-mini-api" />
+        <module name="yanVideo-commom" />
+        <module name="yanVideo-common" />
+        <module name="yanVideopojo" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mybatisgeneratorConfig" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
