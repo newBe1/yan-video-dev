@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/META-INF/resources/").addResourceLocations("file:E:/yan-video-file/");
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/META-INF/resources/")
+                .addResourceLocations("file:D:/yan-video-file/");
     }
 }
