@@ -42,7 +42,7 @@ public class RegistLoginController extends BasicControll {
 
         //保存用户 进行注册
         if (!usernameIsExist) {
-            //user.setNickname(user.getNickname());
+            user.setNickname("用户X");
             user.setPassword(MD5Utils.getMD5Str(user.getPassword()));
             user.setFansCounts(0);
             user.setReceiveLikeCounts(0);

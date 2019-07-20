@@ -42,7 +42,7 @@ public class UserController extends BasicControll {
         }
 
         // 文件保存的命名空间
-        String fileSpace = "E:/yan-video-file";
+        String fileSpace = FILE_SPACE;
         // 保存到数据库中的相对路径
         String uploadPathDB = "/" + userId + "/face";
 
@@ -98,9 +98,28 @@ public class UserController extends BasicControll {
         if (StringUtils.isBlank(userId)) {
             return IMoocJSONResult.errorMsg("用户id不能为空...");
         }
+
+        //查询用户信息
         Users user = userService.userInfo(userId);
         UsersVO usersVO = new UsersVO();
         BeanUtils.copyProperties(user, usersVO);
         return IMoocJSONResult.ok(usersVO);
+    }
+
+    @PostMapping(value = "changeName")
+    @ApiOperation(value = "修改用户昵称",notes = "修改用户昵称接口")
+    @ApiImplicitParam(name = "userId",value = "用户Id",dataType = "String",required = true,paramType = "query")
+    public IMoocJSONResult changeName(String userId,String nikeName){
+        if (StringUtils.isBlank(userId)) {
+            return IMoocJSONResult.errorMsg("用户id不能为空...");
+        }
+
+        //修改昵称
+        Users user = new Users();
+        user.setId(userId);
+        user.setNickname(nikeName);
+        userService.updateUserInfo(user);
+
+        return IMoocJSONResult.ok(nikeName);
     }
 }
