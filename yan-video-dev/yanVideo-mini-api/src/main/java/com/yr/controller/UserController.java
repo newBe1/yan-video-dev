@@ -1,6 +1,7 @@
 package com.yr.controller;
 
 import com.yr.pojo.Users;
+import com.yr.pojo.VO.PublisherVideo;
 import com.yr.pojo.VO.UsersVO;
 import com.yr.service.UserService;
 import com.yr.utils.IMoocJSONResult;
@@ -121,5 +122,24 @@ public class UserController extends BasicControll {
         userService.updateUserInfo(user);
 
         return IMoocJSONResult.ok(nikeName);
+    }
+
+    public IMoocJSONResult queryPublisher(String loginUserId,String videoId,String publishUserId){
+        if(StringUtils.isBlank(publishUserId)){
+            return IMoocJSONResult.errorMsg("视频作者的id不能为空");
+        }
+
+        //查询视频作者的信息
+        Users userInfo = userService.userInfo(publishUserId);
+        UsersVO publisher = new UsersVO();
+        BeanUtils.copyProperties(userInfo,publisher);
+
+        //查询登录者是否喜欢此视频
+        boolean userLikeVideo = userService.isUserLikeVideo(loginUserId,videoId);
+
+        PublisherVideo bean = new PublisherVideo();
+        bean.setPublisher(publisher);
+        bean.setUserLikeVideo(userLikeVideo);
+        return IMoocJSONResult.ok(bean);
     }
 }

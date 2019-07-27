@@ -17,7 +17,7 @@ public class BasicControll {
     public static final String FILE_SPACE = "D:/yan-video-file";
 
     //ffmpge
-    public static final String FFMPEG_EXE = "D:\\ffmpeg\\bin\\ffmpeg.exe";
+    public static final String FFMPEG_EXE = "D:\\tools\\ffmpeg\\bin\\ffmpeg.exe";
 
     //每页显示个数
     public static final Integer PAGE_SIZE = 5;

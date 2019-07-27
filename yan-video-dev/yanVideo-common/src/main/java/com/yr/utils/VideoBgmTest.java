@@ -14,12 +14,12 @@ public class VideoBgmTest {
         this.ffmpegEXE = ffmpegEXE;
     }
 
-    public void convertor(String voide, String bgm, double seconds, String finalFile) throws Exception {
+    public void convertor(String video, String bgm, double seconds, String finalFile) throws Exception {
         List<String> command = new ArrayList<>();
 
         command.add(ffmpegEXE);
         command.add("-i");
-        command.add(voide);
+        command.add(video);
         command.add("-i");
         command.add(bgm);
         command.add("-t");
@@ -46,6 +46,15 @@ public class VideoBgmTest {
         }
         if (errorStream != null) {
             errorStream.close();
+        }
+    }
+
+    public static void main(String[] args) {
+        VideoBgmTest ffmpeg = new VideoBgmTest("D:\\tools\\ffmpeg\\bin\\ffmpeg.exe");
+        try {
+            ffmpeg.convertor("D:\\fileyr\\WeChat Files\\w18879098038\\FileStorage\\Video\\2019-07\\139953229973554f74fd89815ce5d352.mp4", "D:\\fileyr\\yan-video-file\\bgm\\HOYO-MiX - Gion.mp3", 7.1, "D:\\这是通过java生产的视频.mp4");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

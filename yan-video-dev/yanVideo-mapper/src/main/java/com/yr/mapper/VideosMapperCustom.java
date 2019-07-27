@@ -9,6 +9,12 @@ import java.util.List;
 
 public interface VideosMapperCustom extends MyMapper<Videos> {
 
-    //已热搜词为搜索对象查询所以相关的视频
-    List<VideosVO> queryAllVidoesVO(@Param("videoDesc") String videoDesc);
+    //以热搜词为搜索对象查询所以相关的视频
+     List<VideosVO> queryAllVideosVO(@Param("videoDesc") String videoDesc);
+
+    // 对视频喜欢的数量进行累加
+    void addVideoLikeCount(String videoId);
+
+    //对视频的喜欢数进行减少
+    void reduceVideoLikeCount(String video);
 }

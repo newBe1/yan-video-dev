@@ -2,6 +2,8 @@ package com.yr.controller;
 
 import com.yr.enums.VideoStatusEnum;
 import com.yr.pojo.Bgm;
+import com.yr.pojo.Comments;
+import com.yr.pojo.UsersLikeVideos;
 import com.yr.pojo.Videos;
 import com.yr.service.BgmService;
 import com.yr.service.VideoService;
@@ -71,6 +73,7 @@ public class VideoController extends BasicControll {
         InputStream inputStream = null;
         FileOutputStream fileOutputStream = null;
 
+        //先上传视频文件
         try {
             if (file != null) {
                 String fileName = file.getOriginalFilename();
@@ -106,6 +109,9 @@ public class VideoController extends BasicControll {
                 fileOutputStream.close();
             }
         }
+
+
+        //对视频和音频进行合成并剪辑封面
         if (StringUtils.isNotBlank(bgmId)) {
             Bgm bgm = bgmService.selectBgmById(bgmId);
 
@@ -209,19 +215,87 @@ public class VideoController extends BasicControll {
     }*/
 
     @PostMapping(value = "/showAll")
-    public IMoocJSONResult showAll(@RequestBody Videos videos, Integer isSaverRecord, Integer page) throws Exception {
+    public IMoocJSONResult showAll(@RequestBody Videos videos , Integer isSaveRecord, Integer page){
 
         if (page == null) {
             page = 1;
         }
-        PagedResult result = videoService.getAllVideos(videos, isSaverRecord, page, PAGE_SIZE);
+        PagedResult result = videoService.getAllVideos(videos ,isSaveRecord, page, PAGE_SIZE);
 
         return IMoocJSONResult.ok(result);
     }
 
+    /**
+     * 获取热搜词集合 （按被搜素的次数排序）
+     * @return
+     */
     @PostMapping(value = "/hot")
     public IMoocJSONResult hot() {
         List<String> list = videoService.getHotWords();
+        return IMoocJSONResult.ok(list);
+    }
+
+    /**
+     * 用户点击喜欢视频   不能重复喜欢  会报错
+     * @param videoCreaterId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value="/userLike")
+    public IMoocJSONResult userLike(UsersLikeVideos usersLikeVideos , String videoCreaterId)
+            throws Exception {
+        videoService.userLikeVideo(usersLikeVideos , videoCreaterId);
+        return IMoocJSONResult.ok();
+    }
+
+    /**
+     * 用户取消喜欢视频
+     * @param usersLikeVideos
+     * @param videoCreaterId
+     * @return
+     */
+    @PostMapping(value = "userUnLike")
+    public IMoocJSONResult userUnLike(UsersLikeVideos usersLikeVideos , String videoCreaterId){
+        videoService.userUnLikeVideo(usersLikeVideos , videoCreaterId);
+        return IMoocJSONResult.ok();
+    }
+
+    /**
+     * 保持用户评论
+     * @param comment
+     * @param fatherCommentId
+     * @param toUserId
+     * @return
+     */
+    @PostMapping(value = "saveComment")
+    public IMoocJSONResult saveComment(@RequestBody Comments comment, String fatherCommentId , String toUserId){
+        comment.setFatherCommentId(fatherCommentId);
+        comment.setToUserId(toUserId);
+        videoService.saveCommon(comment);
+        return IMoocJSONResult.ok();
+    }
+
+
+    /**
+     * 获取视频的所有评论  分页展示
+     * @param videoId
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @PostMapping(value = "getVideoComments")
+    public IMoocJSONResult getVideoComments(String videoId,Integer page,Integer pageSize){
+        if(StringUtils.isBlank(videoId)){
+            return IMoocJSONResult.errorMsg("视频id不能为空");
+        }
+        if(page == null){
+            page = 1;
+        }
+        if(pageSize == null){
+            pageSize = 10;
+        }
+
+        PagedResult list = videoService.getAllComments(videoId,page,pageSize);
         return IMoocJSONResult.ok(list);
     }
 }
