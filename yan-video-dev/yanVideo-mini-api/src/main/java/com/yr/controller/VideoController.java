@@ -298,4 +298,6 @@ public class VideoController extends BasicControll {
         PagedResult list = videoService.getAllComments(videoId,page,pageSize);
         return IMoocJSONResult.ok(list);
     }
+
+
 }
