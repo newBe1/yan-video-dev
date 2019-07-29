@@ -14,7 +14,7 @@ public class BasicControll {
 
     public static final String USER_REDIS_SESSION = "uesr-redis-session";
     // 文件保存的命名空间
-    public static final String FILE_SPACE = "D:/yan-video-file";
+    public static final String FILE_SPACE = "D:\\yan-video-file";
 
     //ffmpge
     public static final String FFMPEG_EXE = "D:\\tools\\ffmpeg\\bin\\ffmpeg.exe";
