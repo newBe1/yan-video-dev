@@ -214,6 +214,7 @@ public class VideoController extends BasicControll {
         return IMoocJSONResult.ok();
     }*/
 
+    @ApiOperation(value = "展示所有视频" , notes = "分页展示")
     @PostMapping(value = "/showAll")
     public IMoocJSONResult showAll(@RequestBody Videos videos , Integer isSaveRecord, Integer page){
 
@@ -261,7 +262,7 @@ public class VideoController extends BasicControll {
     }
 
     /**
-     * 保持用户评论
+     * 保存用户评论
      * @param comment
      * @param fatherCommentId
      * @param toUserId
@@ -299,5 +300,31 @@ public class VideoController extends BasicControll {
         return IMoocJSONResult.ok(list);
     }
 
+    @ApiOperation(value = "展示我关注的人发的视频", notes = "分页展示")
+    @PostMapping(value = "showMyFollow")
+    public IMoocJSONResult showMyFollow(String userId , Integer page){
+        if(StringUtils.isBlank(userId)){
+            return IMoocJSONResult.errorMsg("用户id不能为空");
+        }
+
+        if (page == null) {
+            page = 1;
+        }
+
+        int pageSize = 5;
+        return IMoocJSONResult.ok(videoService.showMyFollow(userId,page,pageSize));
+    }
+
+    @PostMapping(value = "showMyLike")
+    public IMoocJSONResult showMyLike(String userId , Integer page){
+        if(StringUtils.isBlank(userId)){
+            return IMoocJSONResult.errorMsg("用户id不能为空");
+        }
+        if(page == null){
+            page = 1;
+        }
+        int pageSize = 5;
+        return IMoocJSONResult.ok(videoService.showMyLike(userId,page,pageSize));
+    }
 
 }

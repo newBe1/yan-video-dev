@@ -42,4 +42,20 @@
     <update id="reduceVideoLikeCount" parameterType="java.lang.String">
         update videos set like_counts = like_counts - 1 where id = #{videoId}
     </update>
+
+    <select id="showMyFollow" parameterType="java.lang.String" resultType="com.yr.pojo.VO.VideosVO">
+        select v.* ,u.face_image as face_image , u.nickname as nickname from videos v
+        left join user u on u.id = v.user_id
+        where v.user_id in (select  uf.user_id from user_fans uf where uf.fan_id = #{userId})
+        and v.status = 1
+        order by create_time desc
+    </select>
+
+    <select id="showMyLike" parameterType="java.lang.String" resultType="com.yr.pojo.VO.VideosVO">
+        select v.* ,u.face_image as face_image , u.nickname as nickname from videos v
+        left join user u on u.video_id = v.id
+        where v.id in (select ulv.video_id from user_like_videos ulv where ulv.user_id = #{userId})
+        and v.status = 1
+        order by v.create_time desc
+    </select>
 </mapper>

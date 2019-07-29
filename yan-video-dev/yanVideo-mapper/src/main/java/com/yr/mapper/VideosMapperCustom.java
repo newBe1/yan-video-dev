@@ -17,4 +17,10 @@ public interface VideosMapperCustom extends MyMapper<Videos> {
 
     //对视频的喜欢数进行减少
     void reduceVideoLikeCount(String video);
+
+    //查询用户关注的视频
+    List<VideosVO> showMyFollow(String userId);
+
+    //查询我喜欢的视频
+    List<VideosVO> showMyLike(String userId);
 }

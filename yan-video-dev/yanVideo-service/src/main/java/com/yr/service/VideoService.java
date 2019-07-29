@@ -66,4 +66,23 @@ public interface VideoService {
      * @return
      */
     PagedResult getAllComments(String videoId, Integer page, Integer pageSize);
+
+    /**
+     * 查询我关注的人发的视频
+     * @param userId
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    PagedResult showMyFollow(String userId , Integer page ,Integer pageSize);
+
+
+    /**
+     * 查询我喜欢的视频
+     * @param userId
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    PagedResult showMyLike(String userId , Integer page , Integer pageSize);
 }
