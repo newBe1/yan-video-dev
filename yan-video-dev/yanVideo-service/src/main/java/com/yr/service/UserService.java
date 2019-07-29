@@ -1,6 +1,7 @@
 package com.yr.service;
 
 import com.yr.pojo.Users;
+import com.yr.pojo.UsersReport;
 
 public interface UserService {
     /**
@@ -48,4 +49,32 @@ public interface UserService {
      */
     Boolean isUserLikeVideo(String userId, String videoId );
 
+    /**
+     * 查询用户是否关注别人
+     * @param userId
+     * @param fanId
+     * @return
+     */
+    boolean queryIfFollow(String userId , String fanId);
+
+
+    /**
+     * 关注成为粉丝  保存关系
+     * @param userId
+     * @param fanId
+     */
+    void saveUserFanRelation(String userId , String fanId);
+
+    /**
+     *
+     * @param userId
+     * @param fanId
+     */
+    void deleteUserFanRelation(String userId , String fanId);
+
+    /**
+     *保存举报信息
+     * @param usersReport
+     */
+    void reportUser(UsersReport usersReport);
 }

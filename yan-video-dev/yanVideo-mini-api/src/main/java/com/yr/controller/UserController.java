@@ -1,6 +1,7 @@
 package com.yr.controller;
 
 import com.yr.pojo.Users;
+import com.yr.pojo.UsersReport;
 import com.yr.pojo.VO.PublisherVideo;
 import com.yr.pojo.VO.UsersVO;
 import com.yr.service.UserService;
@@ -12,15 +13,11 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
@@ -95,7 +92,7 @@ public class UserController extends BasicControll {
     @PostMapping(value = "userInfo")
     @ApiOperation(value = "查询用户信息", notes = "查询用户信息接口")
     @ApiImplicitParam(name = "userId", value = "用户id", dataType = "String", required = true, paramType = "query")
-    public IMoocJSONResult userInfo(String userId) {
+    public IMoocJSONResult userInfo(String userId,String fanId) {
         if (StringUtils.isBlank(userId)) {
             return IMoocJSONResult.errorMsg("用户id不能为空...");
         }
@@ -104,6 +101,7 @@ public class UserController extends BasicControll {
         Users user = userService.userInfo(userId);
         UsersVO usersVO = new UsersVO();
         BeanUtils.copyProperties(user, usersVO);
+        usersVO.setFollow(userService.queryIfFollow(userId,fanId));
         return IMoocJSONResult.ok(usersVO);
     }
 
@@ -124,6 +122,8 @@ public class UserController extends BasicControll {
         return IMoocJSONResult.ok(nikeName);
     }
 
+    @ApiOperation(value ="查询视频作者信息",notes = "视频作者的id不能为空")
+    @PostMapping(value = "queryPublisher")
     public IMoocJSONResult queryPublisher(String loginUserId,String videoId,String publishUserId){
         if(StringUtils.isBlank(publishUserId)){
             return IMoocJSONResult.errorMsg("视频作者的id不能为空");
@@ -141,5 +141,38 @@ public class UserController extends BasicControll {
         bean.setPublisher(publisher);
         bean.setUserLikeVideo(userLikeVideo);
         return IMoocJSONResult.ok(bean);
+    }
+
+    @ApiOperation(value = "成为粉丝",notes = "用户的粉丝数增加 粉丝的关注数增加")
+    @PostMapping(value = "beYourFans")
+    public IMoocJSONResult beYourFans(String userId , String fanId){
+        if(StringUtils.isBlank(userId) || StringUtils.isBlank(fanId)){
+            return IMoocJSONResult.errorMsg("用户id和粉丝id不能为空");
+        }
+
+        userService.saveUserFanRelation(userId,fanId);
+        return IMoocJSONResult.ok("关注成功");
+    }
+
+
+    @ApiOperation(value = "取消关注",notes = "用户的粉丝数减少 粉丝的关注数减少")
+    @PostMapping(value = "dontBeYourFans")
+    public IMoocJSONResult dontBeYourFans(String userId , String fanId){
+        if(StringUtils.isBlank(userId) || StringUtils.isBlank(fanId)){
+            return IMoocJSONResult.errorMsg("用户id和粉丝id不能为空");
+        }
+
+        userService.deleteUserFanRelation(userId,fanId);
+        return IMoocJSONResult.ok("取消关注成功");
+    }
+
+    @ApiOperation(value = "举报用户视频")
+    @PostMapping(value = "reportUser")
+    public IMoocJSONResult reportUser(@RequestBody UsersReport usersReport){
+
+        //保存举报信息
+        userService.reportUser(usersReport);
+
+        return IMoocJSONResult.ok("举报成功");
     }
 }
