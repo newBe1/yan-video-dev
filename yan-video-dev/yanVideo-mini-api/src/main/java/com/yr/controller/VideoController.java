@@ -242,6 +242,7 @@ public class VideoController extends BasicControll {
      * @return
      * @throws Exception
      */
+    @ApiOperation(value = "用户点击喜欢视频",notes = "")
     @PostMapping(value="/userLike")
     public IMoocJSONResult userLike(UsersLikeVideos usersLikeVideos , String videoCreaterId)
             throws Exception {
@@ -255,6 +256,7 @@ public class VideoController extends BasicControll {
      * @param videoCreaterId
      * @return
      */
+    @ApiOperation(value = "用户取消喜欢视频", notes = "")
     @PostMapping(value = "userUnLike")
     public IMoocJSONResult userUnLike(UsersLikeVideos usersLikeVideos , String videoCreaterId){
         videoService.userUnLikeVideo(usersLikeVideos , videoCreaterId);
@@ -268,6 +270,7 @@ public class VideoController extends BasicControll {
      * @param toUserId
      * @return
      */
+    @ApiOperation(value = "保存用户评论",notes = "")
     @PostMapping(value = "saveComment")
     public IMoocJSONResult saveComment(@RequestBody Comments comment, String fatherCommentId , String toUserId){
         comment.setFatherCommentId(fatherCommentId);
@@ -315,6 +318,7 @@ public class VideoController extends BasicControll {
         return IMoocJSONResult.ok(videoService.showMyFollow(userId,page,pageSize));
     }
 
+    @ApiOperation(value = "展示我喜欢的人视频", notes = "分页展示")
     @PostMapping(value = "showMyLike")
     public IMoocJSONResult showMyLike(String userId , Integer page){
         if(StringUtils.isBlank(userId)){
