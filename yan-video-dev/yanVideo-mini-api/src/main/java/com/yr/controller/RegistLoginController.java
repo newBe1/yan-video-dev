@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @RestController
 @Api(value = "用户注册登录的接口", tags = {"注册和登录的controller"})
-public class RegistLoginController extends BasicControll {
+public class RegistLoginController extends Basic {
     @Autowired
     private UserService userService;
 
@@ -65,6 +65,7 @@ public class RegistLoginController extends BasicControll {
     public UsersVO setUserRedisSessionToken(Users userModel) {
         String uniqueToken = UUID.randomUUID().toString();   //生成唯一的字符串作为token
         redis.set(USER_REDIS_SESSION + ":" + userModel.getId(), uniqueToken, 1000 * 60 * 30);
+        System.out.println(USER_REDIS_SESSION + ":" + userModel.getId());
         UsersVO usersVO = new UsersVO();
         BeanUtils.copyProperties(userModel, usersVO);         //将userModel的属性复制给usersVO
         usersVO.setUserToken(uniqueToken);

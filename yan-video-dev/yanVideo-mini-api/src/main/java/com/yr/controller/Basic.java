@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Api(tags = "基础静态字符")
-public class BasicControll {
+public class Basic {
 
     @Autowired
     public RedisOperator redis;
 
-    public static final String USER_REDIS_SESSION = "uesr-redis-session";
+    public static final String USER_REDIS_SESSION = "user-redis-session";
     // 文件保存的命名空间
     public static final String FILE_SPACE = "D:\\yan-video-file";
 
     //ffmpge
-    public static final String FFMPEG_EXE = "D:\\tools\\ffmpeg\\bin\\ffmpeg.exe";
+    public static final String FFMPEG_EXE = "D:\\ffmpeg\\bin\\ffmpeg.exe";
 
     //每页显示个数
     public static final Integer PAGE_SIZE = 5;

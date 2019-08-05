@@ -25,11 +25,12 @@ import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.prefs.BackingStoreException;
 
 @RequestMapping(value = "/video")
 @Api(value = "视频接口", tags = "视频的controller")
 @RestController
-public class VideoController extends BasicControll {
+public class VideoController {
     @Autowired
     private BgmService bgmService;
 
@@ -86,8 +87,8 @@ public class VideoController extends BasicControll {
                 if (StringUtils.isNoneBlank(fileName)) {
                     uploadPathDB += fileName;
                     coverPathDB += fileNamePerfix + ".jpg";
-                    finalVideoPath = FILE_SPACE + uploadPathDB;
-                    finalCoverPath = FILE_SPACE + coverPathDB;
+                    finalVideoPath = Basic.FILE_SPACE + uploadPathDB;
+                    finalCoverPath = Basic.FILE_SPACE + coverPathDB;
                     File outFile = new File(finalVideoPath);
                     if (outFile.getParentFile() != null || !outFile.getParentFile().isDirectory()) {
                         // 创建父文件夹
@@ -115,21 +116,21 @@ public class VideoController extends BasicControll {
         if (StringUtils.isNotBlank(bgmId)) {
             Bgm bgm = bgmService.selectBgmById(bgmId);
 
-            String bgmPath = FILE_SPACE + bgm.getPath();
+            String bgmPath = Basic.FILE_SPACE + bgm.getPath();
 
-            String ffmpegEXE = FFMPEG_EXE;
+            String ffmpegEXE = Basic.FFMPEG_EXE;
             VideoBgmTest tool = new VideoBgmTest(ffmpegEXE);
             String videoInputPath = finalVideoPath;
             String videoOutputName = UUID.randomUUID().toString() + ".mp4";
             uploadPathDB = "/" + userId + "/video/" + videoOutputName;
-            finalVideoPath = FILE_SPACE + uploadPathDB;
+            finalVideoPath = Basic.FILE_SPACE + uploadPathDB;
             tool.convertor(videoInputPath, bgmPath, videoSeconds, finalVideoPath);
         }
         System.out.println("uploadPathDB : " + uploadPathDB);
         System.out.println("finalVideoPath : " + finalVideoPath);
 
         // 对视频进行截图
-        FetchVideoCover videoInfo = new FetchVideoCover(FFMPEG_EXE);
+        FetchVideoCover videoInfo = new FetchVideoCover(Basic.FFMPEG_EXE);
         videoInfo.getCover(finalVideoPath, finalCoverPath);
 
         //将video保存到数据库
@@ -221,7 +222,7 @@ public class VideoController extends BasicControll {
         if (page == null) {
             page = 1;
         }
-        PagedResult result = videoService.getAllVideos(videos ,isSaveRecord, page, PAGE_SIZE);
+        PagedResult result = videoService.getAllVideos(videos ,isSaveRecord, page, Basic.PAGE_SIZE);
 
         return IMoocJSONResult.ok(result);
     }

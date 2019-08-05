@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yr.controller.Basic;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,7 +21,6 @@ public class MiniInterceptor implements HandlerInterceptor {
 
     @Autowired
     public RedisOperator redis;
-    public static final String USER_REDIS_SESSION = "user-redis-session";
 
     /**
      * 拦截请求，在controller调用之前
@@ -32,9 +32,9 @@ public class MiniInterceptor implements HandlerInterceptor {
         String userToken = request.getHeader("headerUserToken");
 
         if (StringUtils.isNotBlank(userId) && StringUtils.isNotBlank(userToken)) {
-            String uniqueToken = redis.get(USER_REDIS_SESSION + ":" + userId);
+            String uniqueToken = redis.get(Basic.USER_REDIS_SESSION + ":" + userId);
             if (StringUtils.isEmpty(uniqueToken) && StringUtils.isBlank(uniqueToken)) {
-                System.out.println("请登录...");
+                System.out.println("token过期 请登录...");
                 returnErrorResponse(response, new IMoocJSONResult().errorTokenMsg("请登录..."));
                 return false;
             } else {
@@ -45,7 +45,7 @@ public class MiniInterceptor implements HandlerInterceptor {
                 }
             }
         } else {
-            System.out.println("请登录...");
+            System.out.println("头文件参数不全请登录...");
             returnErrorResponse(response, new IMoocJSONResult().errorTokenMsg("请登录..."));
             return false;
         }

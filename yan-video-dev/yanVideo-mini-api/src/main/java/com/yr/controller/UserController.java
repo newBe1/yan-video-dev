@@ -23,7 +23,7 @@ import java.io.InputStream;
 @RestController
 @Api(value = "用户相关业务接口", tags = "用户相关业务controller")
 @RequestMapping("/user")
-public class UserController extends BasicControll {
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -40,7 +40,7 @@ public class UserController extends BasicControll {
         }
 
         // 文件保存的命名空间
-        String fileSpace = FILE_SPACE;
+        String fileSpace = Basic.FILE_SPACE;
         // 保存到数据库中的相对路径
         String uploadPathDB = "/" + userId + "/face";
 
